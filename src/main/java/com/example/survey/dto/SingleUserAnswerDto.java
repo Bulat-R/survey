@@ -1,5 +1,6 @@
 package com.example.survey.dto;
 
+import com.example.survey.entity.Answer;
 import com.example.survey.entity.SingleUserAnswer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -33,9 +34,10 @@ public class SingleUserAnswerDto {
     private String userText;
 
     public static SingleUserAnswerDto fromEntity(SingleUserAnswer sua) {
+        Long answerId = sua.getAnswer() == null ? null : sua.getAnswer().getId();
         return SingleUserAnswerDto.builder()
                 .questionId(sua.getQuestion().getId())
-                .answerId(sua.getAnswer().getId())
+                .answerId(answerId)
                 .userText(sua.getUserText())
                 .build();
     }
