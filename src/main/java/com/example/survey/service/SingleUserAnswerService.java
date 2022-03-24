@@ -52,7 +52,7 @@ public class SingleUserAnswerService {
 
     private SingleUserAnswer fromDto(SingleUserAnswerDto dto, Long userId) {
         Question question = questionService.getById(dto.getQuestionId());
-
+        Answer answer = null;
         if (question.getType() == QuestionType.TEXT) {
             dto.setAnswerId(null);
         } else {
@@ -66,12 +66,13 @@ public class SingleUserAnswerService {
                 throw new BadRequestException("Неверный id ответа");
             }
             dto.setUserText(null);
+            answer = answerService.getById(dto.getAnswerId());
         }
 
         return SingleUserAnswer.builder()
                 .id(userId)
                 .question(question)
-                .answer(answerService.getById(dto.getAnswerId()))
+                .answer(answer)
                 .userText(dto.getUserText())
                 .build();
     }
