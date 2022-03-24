@@ -1,5 +1,6 @@
 package com.example.survey.dto;
 
+import com.example.survey.entity.Answer;
 import com.example.survey.entity.Question;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,9 +42,15 @@ public class QuestionDto {
     private List<AnswerDto> answers;
 
     public static QuestionDto fromEntity(Question q) {
-        List<AnswerDto> list = q.getAnswers().stream()
-                .map(AnswerDto::fromEntity)
-                .collect(Collectors.toList());
+        List<Answer> answers = q.getAnswers();
+        List<AnswerDto> list;
+        if (answers != null) {
+            list = q.getAnswers().stream()
+                    .map(AnswerDto::fromEntity)
+                    .collect(Collectors.toList());
+        } else {
+            list = new ArrayList<>();
+        }
 
         return QuestionDto.builder()
                 .id(q.getId())

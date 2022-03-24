@@ -1,5 +1,6 @@
 package com.example.survey.dto;
 
+import com.example.survey.entity.Question;
 import com.example.survey.entity.Survey;
 import com.example.survey.exception.BadRequestException;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,9 +56,16 @@ public class SurveyDto {
     }
 
     public static SurveyDto fromEntity(Survey s) {
-        List<QuestionDto> list = s.getQuestions().stream()
-                .map(QuestionDto::fromEntity)
-                .collect(Collectors.toList());
+        List<QuestionDto> list;
+        List<Question> questions = s.getQuestions();
+        if (questions != null) {
+            list = questions
+                    .stream()
+                    .map(QuestionDto::fromEntity)
+                    .collect(Collectors.toList());
+        } else {
+            list = new ArrayList<>();
+        }
 
         return SurveyDto.builder()
                 .id(s.getId())
