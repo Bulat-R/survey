@@ -11,6 +11,6 @@ public interface SingleUserAnswerRepository extends JpaRepository<SingleUserAnsw
 
     List<SingleUserAnswer> findAllByUserId(Long userId);
 
-    @Query("select distinct sua.question.survey from SingleUserAnswer sua where sua.id = ?1")
+    @Query("select distinct sua.question.survey from SingleUserAnswer sua where sua.userId = ?1")
     List<Survey> getUserSurveys(Long userId);
 }
