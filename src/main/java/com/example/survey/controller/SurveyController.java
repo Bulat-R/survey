@@ -12,18 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(
-        value = "/api/admin/survey",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
+@RequestMapping("/api/admin/survey")
 @RequiredArgsConstructor
 @Api(tags = "Для администратора")
 public class SurveyController {
 
     private final SurveyService service;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Создание или изменение опроса",
             description = "При отсутствии id создается новый опрос"
@@ -33,7 +29,7 @@ public class SurveyController {
         return service.save(dto);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение опроса по id")
     public SurveyDto getById(@PathVariable
                              @Parameter(description = "Id опроса")
@@ -41,7 +37,7 @@ public class SurveyController {
         return SurveyDto.fromEntity(service.getById(id));
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение всех опросов")
     public List<SurveyDto> get(@RequestParam(required = false)
                                @Parameter(description = "При active = true - возвращает все активные опросы")
@@ -49,7 +45,7 @@ public class SurveyController {
         return service.get(active);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}")
     @Operation(summary = "Удаление опроса по id")
     public void delete(@PathVariable
                        @Parameter(description = "Id опроса")

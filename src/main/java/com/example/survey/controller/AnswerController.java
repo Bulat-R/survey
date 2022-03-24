@@ -12,18 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(
-        value = "/api/admin/answer",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
+@RequestMapping("/api/admin/answer")
 @RequiredArgsConstructor
 @Api(tags = "Для администратора")
 public class AnswerController {
 
     private final AnswerService service;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Создание или изменение ответа",
             description = "При отсутствии id - создает новый ответ; при наличии id - изменяет существующий"
@@ -32,7 +28,7 @@ public class AnswerController {
         return service.save(dto);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение ответа по id")
     public AnswerDto getById(@PathVariable
                              @Parameter(description = "Id ответа")
@@ -40,7 +36,7 @@ public class AnswerController {
         return AnswerDto.fromEntity(service.getById(id));
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение всех ответов")
     public List<AnswerDto> get(@RequestParam(required = false)
                                @Parameter(description = "При наличии параметра - возвращает все ответы по id вопроса")
