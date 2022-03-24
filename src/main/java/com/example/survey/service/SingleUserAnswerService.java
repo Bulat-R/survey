@@ -3,15 +3,13 @@ package com.example.survey.service;
 import com.example.survey.dto.AllUserSurveysDto;
 import com.example.survey.dto.SingleUserAnswerDto;
 import com.example.survey.dto.SurveyDto;
-import com.example.survey.entity.Answer;
-import com.example.survey.entity.Question;
-import com.example.survey.entity.QuestionType;
-import com.example.survey.entity.SingleUserAnswer;
+import com.example.survey.entity.*;
 import com.example.survey.exception.BadRequestException;
 import com.example.survey.repository.SingleUserAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +50,13 @@ public class SingleUserAnswerService {
 
     private SingleUserAnswer fromDto(SingleUserAnswerDto dto, Long userId) {
         Question question = questionService.getById(dto.getQuestionId());
+
+        Survey survey = question.getSurvey();
+        LocalDateTime now = LocalDateTime.now();
+        if (survey.getStartTime().isBefore(now) || survey.getEndTime().isAfter(now)) {
+            throw new BadRequestException("Id вопроса не соответствует активным опросам");
+        }
+
         Answer answer = null;
         if (question.getType() == QuestionType.TEXT) {
             dto.setAnswerId(null);
