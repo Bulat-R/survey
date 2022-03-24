@@ -70,7 +70,7 @@ public class SingleUserAnswerService {
         }
 
         return SingleUserAnswer.builder()
-                .id(userId)
+                .userId(userId)
                 .question(question)
                 .answer(answer)
                 .userText(dto.getUserText())
