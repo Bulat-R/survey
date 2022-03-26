@@ -8,6 +8,7 @@ import com.example.survey.exception.BadRequestException;
 import com.example.survey.repository.SingleUserAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +22,7 @@ public class SingleUserAnswerService {
     private final QuestionService questionService;
     private final AnswerService answerService;
 
+    @Transactional
     public List<SingleUserAnswerDto> save(List<SingleUserAnswerDto> dtoList, Long userId) {
         List<SingleUserAnswer> list = dtoList.stream()
                 .map(dto -> fromDto(dto, userId))
