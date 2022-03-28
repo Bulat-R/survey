@@ -1,6 +1,5 @@
 package com.example.survey.dto;
 
-import com.example.survey.entity.Answer;
 import com.example.survey.entity.SingleUserAnswer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
